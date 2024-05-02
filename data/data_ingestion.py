@@ -2,6 +2,7 @@ import data_utils
 import os
 from pathlib import Path
 from sklearn.model_selection import train_test_split
+import data_transformation
  
 class DataIngestion():
     def __init__(self,                 
@@ -22,8 +23,15 @@ class DataIngestion():
         df.to_csv(raw_path)
         train_data.to_csv(train_data_path)
         test_data.to_csv(test_data_path)
+        
+        return train_data, test_data
    
 root = Path(__file__).parents[1]
 print(root)        
 obj = DataIngestion(root = root)
-obj.initiate_data_ingestion()
+train_data, test_data = obj.initiate_data_ingestion()
+
+#data trasnformation
+transform_obj = data_transformation.DataTransformation(root = root)
+train_dataset, test_dataset = transform_obj.initiate_data_transformation(train_data= train_data, 
+                                                                         test_data = test_data)
