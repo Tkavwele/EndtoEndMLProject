@@ -15,7 +15,4 @@ def DataIngestionConfiguration(root):
     os.makedirs(folder, exist_ok=True)
     
     return raw_path, train_data_path, test_data_path
-def save_object(root, obj_name):
-    obj_path = os.path.join(root, 'data', 'artifacts', obj_name)
-    with open(obj_path, 'wb') as file:
-        return pickle.dump(obj_name, file)
+

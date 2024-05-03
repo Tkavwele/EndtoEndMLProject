@@ -8,7 +8,6 @@ from sklearn.linear_model import LinearRegression
 from xgboost import XGBRegressor
 from catboost import CatBoostRegressor
 import utils
-import data.data_utils as data_utils
 from sklearn.metrics import r2_score
 
 class ModelTrainer():
@@ -42,13 +41,14 @@ class ModelTrainer():
         best_score = model_scores[best_model_name]
         
         print('results',model_scores)  
-        print("Best Model:", best_model_name)
+        print("Best Model name:", best_model_name)
         print("Best Score:", best_score)
         
         best_model = models[best_model_name]
         #save the best model
-        data_utils.save_object(root = root, 
-                               obj_name = best_model_name)
+        utils.save_object(root = root,
+                          obj = best_model,
+                          obj_name = 'model.pkl')
         
         predicted = best_model.predict(test_X)
         r2_square = r2_score(test_Y, predicted)

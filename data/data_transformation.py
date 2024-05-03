@@ -3,7 +3,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 import pandas as pd
-import data_utils
+import utils
 
 class DataTransformation():
     def __init__(self, root,
@@ -57,8 +57,9 @@ class DataTransformation():
         train_dataset = pd.concat([train_X_scaled.reset_index(drop=True), train_Y.reset_index(drop=True)], axis = 1)
         test_dataset = pd.concat([test_X_scaled.reset_index(drop = True), test_Y.reset_index(drop=True)], axis = 1)
         
-        data_utils.save_object(root = self.root,  
-                               obj_name= 'preprocessor.pkl' )
+        utils.save_object(root = self.root,  
+                          obj = preprocessor,
+                          obj_name= 'preprocessor.pkl' )
         
         return train_dataset, test_dataset
         

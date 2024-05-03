@@ -1,4 +1,7 @@
 from sklearn.metrics import r2_score
+import pickle
+import os
+
 def evaluate_model(models, 
                    train_features, 
                    train_labels, 
@@ -21,3 +24,13 @@ def evaluate_model(models,
         results.update({model_name:test_model_score})     
            
     return results
+
+
+def save_object(root, obj, obj_name):
+    obj_path = os.path.join(root, 'data', 'artifacts', obj_name)
+    with open(obj_path, 'wb') as file:
+        return pickle.dump(obj, file)
+    
+def load_object(file_path):
+    with open(file_path, 'rb') as file:
+        return pickle.load(file)
