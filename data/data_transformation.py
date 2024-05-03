@@ -6,7 +6,12 @@ import pandas as pd
 import data_utils
 
 class DataTransformation():
-    def __init__(self, root):
+    def __init__(self, root,
+                 train_path,
+                 test_path):
+        
+        self.train_path = train_path
+        self.test_path = test_path
         self.root = root
     def get_data_transformer_object(self):
         #specify categorical and numerical features
@@ -29,16 +34,18 @@ class DataTransformation():
         return preprocessor
     
     def initiate_data_transformation(self,
-                                     train_data,
-                                     test_data):
+                                     ):
         preprocessor = self.get_data_transformer_object()
+        
+        train_df=pd.read_csv(self.train_path)
+        test_df=pd.read_csv(self.test_path)
         
         #specify input and target data
         target_column = 'math_score'
-        train_X = train_data.drop(target_column, axis = 1)
-        train_Y = train_data[target_column]
-        test_X = test_data.drop(target_column, axis = 1)
-        test_Y = test_data[target_column]
+        train_X = train_df.drop(target_column, axis = 1)
+        train_Y = train_df[target_column]
+        test_X = test_df.drop(target_column, axis = 1)
+        test_Y = test_df[target_column]
         
         #Applying data transformation
         train_X_array = preprocessor.fit_transform(train_X)
@@ -47,8 +54,9 @@ class DataTransformation():
         #convert transformed array to a dataframe
         train_X_scaled = pd.DataFrame(train_X_array)
         test_X_scaled = pd.DataFrame(test_X_array)
-        train_dataset = pd.concat([train_X_scaled, train_Y], axis = 1)
-        test_dataset = pd.concat([test_X_scaled, test_Y], axis = 1)
+        train_dataset = pd.concat([train_X_scaled.reset_index(drop=True), train_Y.reset_index(drop=True)], axis = 1)
+        test_dataset = pd.concat([test_X_scaled.reset_index(drop = True), test_Y.reset_index(drop=True)], axis = 1)
+        
         data_utils.save_object(root = self.root,  
                                obj_name= 'preprocessor.pkl' )
         
